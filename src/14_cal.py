@@ -2,7 +2,6 @@
 The Python standard library's 'calendar' module allows you to
 render a calendar to your terminal.
 https://docs.python.org/3.6/library/calendar.html
-
 Write a program that accepts user input of the form
   `14_cal.py [month] [year]`
 and does the following:
@@ -17,11 +16,9 @@ and does the following:
  - Otherwise, print a usage statement to the terminal indicating
    the format that your program expects arguments to be given.
    Then exit the program.
-
 Note: the user should provide argument input (in the initial call to run the file) and not 
 prompted input. Also, the brackets around year are to denote that the argument is
 optional, as this is a common convention in documentation.
-
 This would mean that from the command line you would call `python3 14_cal.py 4 2015` to 
 print out a calendar for April in 2015, but if you omit either the year or both values, 
 it should use today’s date to get the month and year.
@@ -30,3 +27,31 @@ it should use today’s date to get the month and year.
 import sys
 import calendar
 from datetime import datetime
+
+now = datetime.now()
+mm = now.date().month
+yy = now.date().year
+
+if len(sys.argv) > 1:
+  if sys.argv[1].isdigit():
+    if int(sys.argv[1]) in range(1,13):
+      mm = int(sys.argv[1])
+    else:
+      print("Month must be an integer 1-12.")
+      sys.exit()
+  else:
+    print("Month must be an integer.")
+    sys.exit()
+
+if len(sys.argv) == 3:
+  if sys.argv[2].isdigit():
+    yy = int(sys.argv[2])
+  else:
+    print("Year must be an integer.")
+    sys.exit()
+
+if len(sys.argv) > 3:
+  print("Only month and year arguments accepted.")
+  sys.exit()
+
+print(calendar.month(yy, mm))
